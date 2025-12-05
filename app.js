@@ -987,25 +987,7 @@
       const choice = getCurrentDiceChoice();
       const clientSeed = getRandomClientSeed();
 
-      let gasLimit;
-      try {
-        const gasEstimate = await diceWrite.estimateGas.play(
-          amountBN,
-          choice,
-          clientSeed
-        );
-        gasLimit = gasEstimate.mul(120).div(100);
-      } catch (err) {
-        console.error("Dice estimateGas reverted:", err);
-        const reason = extractRevertReason(err);
-        statusEl.textContent =
-          "This bet would revert on-chain. " + (reason || "");
-        alert(
-          "Dice transaction would revert on-chain.\n" +
-            (reason ? `Reason: ${reason}` : "")
-        );
-        return;
-      }
+      const gasLimit = ethers.utils.parseUnits("0.002", MON_DECIMALS);
 
       statusEl.textContent = "Sending Dice transaction...";
       const tx = await diceWrite.play(amountBN, choice, clientSeed, {
