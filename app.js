@@ -522,7 +522,7 @@
     }
   }
 
-  // ===== Swap Logic =====
+    // ===== Swap Logic =====
   function updateSwapDirectionUI() {
     const tabVinToMon = $("tabVinToMon");
     const tabMonToVin = $("tabMonToVin");
@@ -531,12 +531,14 @@
     const rateLabel = $("swapRateLabel");
 
     if (tabVinToMon && tabMonToVin) {
-      tabVinToMon.classList.remove("swap-tab-active");
-      tabMonToVin.classList.remove("swap-tab-active");
+      // Dùng class .active đúng với CSS
+      tabVinToMon.classList.remove("active");
+      tabMonToVin.classList.remove("active");
+
       if (swapDirection === "vinToMon") {
-        tabVinToMon.classList.add("swap-tab-active");
+        tabVinToMon.classList.add("active");
       } else {
-        tabMonToVin.classList.add("swap-tab-active");
+        tabMonToVin.classList.add("active");
       }
     }
 
