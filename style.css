@@ -910,3 +910,36 @@ body {
     height: 48px;
   }
 }
+/* --- Footer Improvements --- */
+.footer {
+  width: 100%;
+  padding: 1rem 0.5rem;
+  margin-top: 1rem;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.95);
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.footer-content {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  line-height: 1.3rem;
+}
+
+.footer-content a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-content a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .footer-content {
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+  }
+}
