@@ -829,13 +829,71 @@
   }
 
   function setDiceVisual(resultEven) {
-    const visual = $("diceVisual");
-    if (!visual) return;
-    visual.classList.remove("dice-even", "dice-odd");
-    if (resultEven === null || resultEven === undefined) return;
-    if (resultEven) visual.classList.add("dice-even");
-    else visual.classList.add("dice-odd");
+  const visual = $("diceVisual");
+  if (!visual) return;
+
+  const coins = visual.querySelectorAll(".dice-coin");
+  if (!coins || coins.length !== 4) return;
+
+  
+  if (resultEven === null || resultEven === undefined) {
+    const defaultPattern = ["W", "R", "W", "R"];
+    coins.forEach((coin, idx) => {
+      coin.classList.remove("dice-coin-white", "dice-coin-red");
+      coin.classList.add(
+        defaultPattern[idx] === "W" ? "dice-coin-white" : "dice-coin-red"
+      );
+    });
+    return;
   }
+
+  let pattern;
+
+  if (resultEven) {
+    
+    const evenType = Math.floor(Math.random() * 3);
+    if (evenType === 0) {
+      pattern = ["W", "W", "W", "W"]; // 4 trắng
+    } else if (evenType === 1) {
+      pattern = ["R", "R", "R", "R"]; // 4 đỏ
+    } else {
+      
+      pattern =
+        Math.random() < 0.5
+          ? ["W", "W", "R", "R"]
+          : ["R", "R", "W", "W"];
+    }
+  } else {
+    
+    const oddType = Math.floor(Math.random() * 2);
+    if (oddType === 0) {
+      // 1 đỏ, 3 trắng (4 vị trí ngẫu nhiên)
+      const patterns = [
+        ["R", "W", "W", "W"],
+        ["W", "R", "W", "W"],
+        ["W", "W", "R", "W"],
+        ["W", "W", "W", "R"]
+      ];
+      pattern = patterns[Math.floor(Math.random() * patterns.length)];
+    } else {
+      
+      const patterns = [
+        ["W", "R", "R", "R"],
+        ["R", "W", "R", "R"],
+        ["R", "R", "W", "R"],
+        ["R", "R", "R", "W"]
+      ];
+      pattern = patterns[Math.floor(Math.random() * patterns.length)];
+    }
+  }
+
+  coins.forEach((coin, idx) => {
+    coin.classList.remove("dice-coin-white", "dice-coin-red");
+    coin.classList.add(
+      pattern[idx] === "W" ? "dice-coin-white" : "dice-coin-red"
+    );
+  });
+}
 
   function updateDiceLastResultUI() {
     const resEl = $("diceLastResult");
