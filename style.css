@@ -725,6 +725,42 @@ body {
   background: #f97373;
 }
 
+/* Quả cầu chính */
+.dice-orb {
+  width: 70px;
+  height: 70px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, #f9fafb, #1e3a8a);
+  box-shadow: 0 0 0 1px rgba(191, 219, 254, 0.35),
+    0 18px 45px rgba(15, 23, 42, 0.95), inset 0 0 22px rgba(15, 23, 42, 0.85);
+}
+
+/* 4 quân vị */
+.dice-coins {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(2, 26px);
+  grid-template-rows: repeat(2, 26px);
+  gap: 8px;
+}
+
+.dice-coin {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(17, 24, 39, 0.9);
+  box-shadow: 0 5px 10px rgba(15, 23, 42, 0.9);
+  transition: transform 0.22s ease-out, background 0.12s ease-out;
+}
+
+.dice-coin-white {
+  background: #f9fafb;
+}
+
+.dice-coin-red {
+  background: #f97373;
+}
+
 /* Quả cầu đang rung khi đang "xóc" */
 .dice-visual.dice-shaking {
   animation: dice-shake 0.65s ease-in-out infinite;
@@ -741,10 +777,10 @@ body {
     transform: translate(3px, -2px) rotate(2deg);
   }
   60% {
-    transform: translate(-2px, -1px) rotate(-1deg);
+    transform: translate(-1px, 2px) rotate(0deg);
   }
   80% {
-    transform: translate(2px, 2px) rotate(1deg);
+    transform: translate(1px, -2px) rotate(-2deg);
   }
   100% {
     transform: translate(0, 0) rotate(0deg);
