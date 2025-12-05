@@ -503,9 +503,8 @@
       );
       setText(
         "diceMinimumText",
-        `Minimum bet: ${minBetStr} VIN, recommended max bet: ${maxBetStr} VIN`
+  `      Minimum bet: 0.000001 VIN. No hard maximum bet.`
       );
-
       if (currentAccount) {
         const allowance = await vinRead.allowance(
           currentAccount,
