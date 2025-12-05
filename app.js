@@ -478,43 +478,46 @@
   }
 
   async function updateDiceLimitsAndAllowance() {
-    try {
-      initReadProvider();
-      const [minBet, maxBet] = await Promise.all([
-        diceRead.MIN_BET(),
-        diceRead.getMaxBet()
-      ]);
+  try {
+    initReadProvider();
 
-      diceMinBetBN = minBet;
-      diceMaxBetBN = maxBet;
+    const [minBet, maxBet] = await Promise.all([
+      diceRead.MIN_BET(),
+      diceRead.getMaxBet()
+    ]);
 
-      const minBetStr = formatVinDisplay(minBet);
-      const maxBetStr = formatVinDisplay(maxBet, 4);
+    diceMinBetBN = minBet;
+    diceMaxBetBN = maxBet;
 
-      setText(
-        "diceMinInfo",
-        `Minimum bet: ${minBetStr} VIN (2× payout on win)`
+    const minBetStr = formatVinDisplay(minBet);
+
+    // Show dynamic minimum bet (from contract) in the small info line
+    setText(
+      "diceMinInfo",
+      `Minimum bet: ${minBetStr} VIN (2× payout on win)`
+    );
+
+    // IMPORTANT:
+    // We DO NOT change the text in <div id="diceMinimumText"> anymore.
+    // The sentence written in index.html will stay exactly as you defined it.
+
+    if (currentAccount) {
+      const allowance = await vinRead.allowance(
+        currentAccount,
+        DICE_CONTRACT_ADDRESS
       );
-      setText(
-        "diceMinimumText",
-        `Minimum bet: ${minBetStr} VIN. There is no fixed maximum bet; your bet only needs to be small enough for the bank to pay 2× your stake.`
-      );
-
-      if (currentAccount) {
-        const allowance = await vinRead.allowance(
-          currentAccount,
-          DICE_CONTRACT_ADDRESS
-        );
-        diceAllowanceBN = allowance;
-        const allowanceStr = formatVinDisplay(allowance, 4);
-        setText("diceAllowance", `${allowanceStr} VIN`);
-      }
-    } catch (err) {
-      console.error("updateDiceLimitsAndAllowance error:", err);
-      setText("diceMinInfo", "Minimum bet: N/A");
-      setText("diceMinimumText", "Minimum / maximum bet: N/A");
+      diceAllowanceBN = allowance;
+      const allowanceStr = formatVinDisplay(allowance, 4);
+      setText("diceAllowance", `${allowanceStr} VIN`);
     }
+  } catch (err) {
+    console.error("updateDiceLimitsAndAllowance error:", err);
+
+    // If something fails, we only update the small info line.
+    // We still DO NOT touch diceMinimumText.
+    setText("diceMinInfo", "Minimum bet: N/A");
   }
+}
 
   // ===== Swap Logic =====
   function updateSwapDirectionUI() {
