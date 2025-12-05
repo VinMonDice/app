@@ -490,27 +490,28 @@
       diceRead.MIN_BET(),
       diceRead.getMaxBet()
     ]);
+
     diceMinBetBN = minBet;
     diceMaxBetBN = maxBet;
+
     const minBetStr = formatVinDisplay(minBet);
     const maxBetStr = formatVinDisplay(maxBet, 4);
+
     setText(
       "diceMinInfo",
-      `Min bet: ${minBetStr} VIN (2x payout on win)`
+      `Minimum bet: ${minBetStr} VIN (2x payout on win)`
     );
- 
+
+    // No hard max bet in the contract
     setText(
       "diceMinimumText",
-      `Minimum bet: ${minBetStr} VIN. No maximum bet enforced by the contract.`
+      `Minimum bet: ${minBetStr} VIN. No maximum bet is enforced by the contract; for safety we recommend keeping each bet at or below ${maxBetStr} VIN based on the current bank.`
     );
-   
+
+    // ⭐ Set default input value = MIN_BET = 0.000001 VIN
     const betInput = $("diceBetAmount");
     if (betInput) {
-      
-      if (!betInput.value || betInput.value === "0.01") {
-        
-        betInput.value = formatVinPlain(minBet, 6);
-      }
+      betInput.value = ethers.utils.formatUnits(minBet, VIN_DECIMALS);
     }
 
     if (currentAccount) {
