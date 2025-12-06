@@ -936,3 +936,60 @@ body {
     height: 48px;
   }
 }
+
+/* =========================================
+   Mobile Display Fix for Nav + VIN Price
+   ========================================= */
+@media (max-width: 768px) {
+  /* Ensure main navigation always visible */
+  .nav-center {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-links {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* Adjust top navigation layout */
+  .top-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .brand {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Make sure VIN price chip always visible */
+  .price-chip {
+    display: inline-flex !important;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+/* Extra support for very small screens */
+@media (max-width: 480px) {
+  .nav-center {
+    display: flex !important;
+  }
+
+  .price-chip {
+    display: inline-flex !important;
+  }
+}
