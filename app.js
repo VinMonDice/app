@@ -486,20 +486,10 @@
       diceRead.getMaxBet()
     ]);
 
+    // Store min/max bet to use in other calculations
+    // Do NOT update or display anything related to diceMinInfo anymore
     diceMinBetBN = minBet;
     diceMaxBetBN = maxBet;
-
-    const minBetStr = formatVinDisplay(minBet);
-
-    // Show dynamic minimum bet (from contract) in the small info line
-    setText(
-      "diceMinInfo",
-      `Minimum bet: ${minBetStr} VIN (2× payout on win)`
-    );
-
-    // IMPORTANT:
-    // We DO NOT change the text in <div id="diceMinimumText"> anymore.
-    // The sentence written in index.html will stay exactly as you defined it.
 
     if (currentAccount) {
       const allowance = await vinRead.allowance(
@@ -512,10 +502,7 @@
     }
   } catch (err) {
     console.error("updateDiceLimitsAndAllowance error:", err);
-
-    // If something fails, we only update the small info line.
-    // We still DO NOT touch diceMinimumText.
-    setText("diceMinInfo", "Minimum bet: N/A");
+    // No update to diceMinInfo here either
   }
 }
 
