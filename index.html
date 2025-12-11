@@ -411,6 +411,38 @@
                 />
                 <button class="btn-max" id="diceMaxButton">MAX</button>
               </div>
+<!-- Normalize swap decimal input -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const swapFrom = document.getElementById('swapFromAmount');
+  if (!swapFrom) return;
+
+  swapFrom.addEventListener('input', (e) => {
+    const cur = e.target.value;
+
+    // Replace comma with dot + remove invalid characters
+    let normalized = String(cur).replace(/,/g, '.').replace(/[^\d.]/g, '');
+
+    // Keep only ONE dot
+    const parts = normalized.split('.');
+    if (parts.length > 1) {
+      normalized = parts.shift() + '.' + parts.join('');
+    }
+
+    // Update input only if changed
+    if (normalized !== cur) {
+      const pos = e.target.selectionStart || normalized.length;
+      e.target.value = normalized;
+      try { e.target.setSelectionRange(pos, pos); } catch (_) {}
+    }
+
+    // Recalculate swap output
+    try {
+      if (typeof recalcSwapOutput === 'function') recalcSwapOutput();
+    } catch (_) {}
+  });
+});
+</script>
 
 <!-- Normalise mobile decimal input (replace comma with dot, remove invalid chars, keep single dot) -->
 <script>
