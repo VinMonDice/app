@@ -411,35 +411,39 @@
                 />
                 <button class="btn-max" id="diceMaxButton">MAX</button>
               </div>
-<!-- Normalize swap decimal input -->
+              
+<!-- Normalize swap decimal input (clean & optimized version) -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const swapFrom = document.getElementById('swapFromAmount');
-  if (!swapFrom) return;
+  const el = document.getElementById('swapFromAmount');
+  if (!el) return;
 
-  swapFrom.addEventListener('input', (e) => {
-    const cur = e.target.value;
+  el.addEventListener('input', (e) => {
+    let v = e.target.value;
 
-    // Replace comma with dot + remove invalid characters
-    let normalized = String(cur).replace(/,/g, '.').replace(/[^\d.]/g, '');
+    // 1) Replace comma with dot (mobile keyboard)
+    v = v.replace(/,/g, '.');
 
-    // Keep only ONE dot
-    const parts = normalized.split('.');
+    // 2) Remove invalid chars (allow digits + dot)
+    v = v.replace(/[^\d.]/g, '');
+
+    // 3) Keep only the first dot
+    const parts = v.split('.');
     if (parts.length > 1) {
-      normalized = parts.shift() + '.' + parts.join('');
+      v = parts.shift() + '.' + parts.join('');
     }
 
-    // Update input only if changed
-    if (normalized !== cur) {
-      const pos = e.target.selectionStart || normalized.length;
-      e.target.value = normalized;
+    // 4) Set back if changed
+    if (e.target.value !== v) {
+      const pos = e.target.selectionStart || v.length;
+      e.target.value = v;
       try { e.target.setSelectionRange(pos, pos); } catch (_) {}
     }
 
-    // Recalculate swap output
-    try {
-      if (typeof recalcSwapOutput === 'function') recalcSwapOutput();
-    } catch (_) {}
+    // 5) Trigger swap output update
+    if (typeof recalcSwapOutput === 'function') {
+      recalcSwapOutput();
+    }
   });
 });
 </script>
