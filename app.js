@@ -255,25 +255,58 @@
     return formatUnitsSafe(bn, MON_DECIMALS, precision, false);
   }
 
+    // Robust parsing for VIN input (accepts both '.' and ',' as decimal separator)
   function parseVinInput(str) {
-    const s = (str || "").trim().replace(/,/g, "");
-    if (!s) return null;
+    if (str === null || str === undefined) return null;
+    // 1) Trim and convert to string
+    let s = String(str).trim();
+
+    // 2) Replace commas with dots (mobile locales often use ',')
+    s = s.replace(/,/g, '.');
+
+    // 3) Remove any non-digit/non-dot characters
+    s = s.replace(/[^\d.]/g, '');
+
+    // 4) If empty or only dot, return null
+    if (!s || s === '.') return null;
+
+    // 5) If multiple dots, keep only the first as decimal separator
+    const parts = s.split('.');
+    if (parts.length > 1) {
+      const intPart = parts.shift();
+      const fracPart = parts.join(''); // join remaining parts (removes extra dots)
+      s = intPart + '.' + fracPart;
+    }
+
+    // 6) Finally parse using ethers with VIN_DECIMALS
     try {
       return ethers.utils.parseUnits(s, VIN_DECIMALS);
-    } catch {
+    } catch (err) {
+      // invalid numeric string for the decimals
       return null;
     }
   }
 
+  // Robust parsing for MON input (accepts both '.' and ',' as decimal separator)
   function parseMonInput(str) {
-    const s = (str || "").trim().replace(/,/g, "");
-    if (!s) return null;
+    if (str === null || str === undefined) return null;
+    let s = String(str).trim();
+    s = s.replace(/,/g, '.');
+    s = s.replace(/[^\d.]/g, '');
+    if (!s || s === '.') return null;
+    const parts = s.split('.');
+    if (parts.length > 1) {
+      const intPart = parts.shift();
+      const fracPart = parts.join('');
+      s = intPart + '.' + fracPart;
+    }
     try {
       return ethers.utils.parseUnits(s, MON_DECIMALS);
-    } catch {
+    } catch (err) {
       return null;
     }
   }
+
 
   function getRandomClientSeed() {
     if (window.crypto && window.crypto.getRandomValues) {
